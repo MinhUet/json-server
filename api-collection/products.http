@@ -1,0 +1,40 @@
+@baseURL = http://localhost:3000/api
+@resourceName = products
+
+# @name getAllProduct
+GET {{baseURL}}/{{resourceName}}
+
+###
+
+# @name filter
+GET {{baseURL}}/{{resourceName}}?price_gte=200&color=green
+
+###
+
+# @name pagination
+GET {{baseURL}}/{{resourceName}}?_limit=2&page=2
+
+###
+
+# @name insertProduct
+POST {{baseURL}}/{{resourceName}}
+Content-Type: application/json
+
+{
+    "name": "Hello"
+}
+
+###
+
+# @name UpdateProduct
+PATCH {{baseURL}}/{{resourceName}}/3
+Content-Type: application/json
+
+{
+    "name": "MINH 1"
+}
+
+###
+
+# @name RemoveProduct
+DELETE  {{baseURL}}/{{resourceName}}/3
