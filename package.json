@@ -16,7 +16,8 @@
   "author": "BVMINH",
   "license": "MIT",
   "dependencies": {
-    "json-server": "^0.17.0"
+    "json-server": "^0.17.0",
+    "query-string": "^7.1.1"
   },
   "devDependencies": {
     "faker": "^5.5.3",

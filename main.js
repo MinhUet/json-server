@@ -1,4 +1,5 @@
 const jsonServer = require('json-server');
+const queryString = require('query-string');
 const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
@@ -18,10 +19,31 @@ server.use((req, res, next) => {
   if (req.method === 'POST') {
     req.body.createdAt = Date.now();
     req.body.modifiedAt = Date.now();
+  } else if (req.method === 'PATCH') {
+    req.body.modifiedAt = Date.now();
   }
   // Continue to JSON Server router
   next();
 });
+
+router.render = (req, res) => {
+  const headers = res.getHeaders();
+  const totalCount = headers['x-total-count'];
+  if (req.method === 'GET' && totalCount) {
+    const queryParam = queryString.parse(req._parsedUrl.query);
+
+    const result = {
+      data: res.locals.data,
+      pagination: {
+        _page: Number.parseInt(queryParam._page) || 1,
+        _limit: Number.parseInt(queryParam._limit) || 10,
+        _totalRows: Number.parseInt(totalCount),
+      },
+    };
+    return res.jsonp(result);
+  }
+  res.jsonp(res.locals.data);
+};
 
 // Use default router
 server.use('/api', router);
